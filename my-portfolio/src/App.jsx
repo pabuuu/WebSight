@@ -173,6 +173,7 @@ export default function Portfolio() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+export default function App() {
   return (
     <div className="bg-gradient-to-br from-gray-950 via-slate-900 to-gray-950 text-white min-h-screen">
       {/* Facebook Customer Chat Plugin */}
