@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Code, Settings, Briefcase, GraduationCap, Mail, Github, Linkedin } from 'lucide-react';
+import { Menu, X, Code, Settings, Briefcase, GraduationCap } from 'lucide-react';
 
 export default function Portfolio() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -21,6 +21,27 @@ export default function Portfolio() {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Load Facebook Customer Chat Plugin
+  useEffect(() => {
+    // Load Facebook SDK
+    window.fbAsyncInit = function() {
+      window.FB.init({
+        xfbml: true,
+        version: 'v18.0'
+      });
+    };
+
+    // Load the SDK script
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s);
+      js.id = id;
+      js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
   }, []);
 
   const scrollToSection = (sectionId) => {
@@ -121,9 +142,30 @@ export default function Portfolio() {
     message: ''
   });
 
+  const projectTypes = [
+    "Static Website",
+    "Management System",
+    "E-Commerce Platform",
+    "Mobile App",
+    "Custom Web Application",
+    "Capstone Project",
+    "Other"
+  ];
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert('Thank you for your message! We will get back to you soon.');
+    
+    // Format message
+    const messageText = `Hi! I'm interested in your services.\n\nName: ${formData.name}\nEmail: ${formData.email}\nProject Type: ${formData.project}\n\nMessage:\n${formData.message}`;
+    
+    // Encode message for URL
+    const encodedMessage = encodeURIComponent(messageText);
+    
+    // Open Messenger with pre-filled text
+    const messengerLink = `https://m.me/61583958157909?text=${encodedMessage}`;
+    window.open(messengerLink, '_blank');
+    
+    // Reset form
     setFormData({ name: '', email: '', project: '', message: '' });
   };
 
@@ -132,13 +174,24 @@ export default function Portfolio() {
   };
 
   return (
-    <div className="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white min-h-screen">
+    <div className="bg-gradient-to-br from-gray-950 via-slate-900 to-gray-950 text-white min-h-screen">
+      {/* Facebook Customer Chat Plugin */}
+      <div id="fb-root"></div>
+      <div 
+        className="fb-customerchat"
+        attribution="setup_tool"
+        page_id="61583958157909"
+        theme_color="#06b6d4"
+        logged_in_greeting="Hi! How can we help you with your project?"
+        logged_out_greeting="Hi! How can we help you with your project?"
+      ></div>
+
       {/* Navigation */}
-      <nav className="fixed top-0 w-full bg-slate-900/95 backdrop-blur-md z-50 shadow-lg">
+      <nav className="fixed top-0 w-full bg-black/95 backdrop-blur-md z-50 shadow-lg border-b border-cyan-500/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
-              DevSquad
+            <div className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+              WebSight
             </div>
             
             {/* Desktop Menu */}
@@ -147,8 +200,8 @@ export default function Portfolio() {
                 <li key={section}>
                   <button
                     onClick={() => scrollToSection(section)}
-                    className={`capitalize hover:text-purple-400 transition-colors ${
-                      activeSection === section ? 'text-purple-400' : ''
+                    className={`capitalize hover:text-cyan-400 transition-colors ${
+                      activeSection === section ? 'text-cyan-400' : ''
                     }`}
                   >
                     {section}
@@ -169,13 +222,13 @@ export default function Portfolio() {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden bg-slate-800 border-t border-slate-700">
+          <div className="md:hidden bg-slate-900 border-t border-cyan-500/20">
             <ul className="px-4 py-4 space-y-4">
               {['home', 'services', 'team', 'projects', 'contact'].map((section) => (
                 <li key={section}>
                   <button
                     onClick={() => scrollToSection(section)}
-                    className="capitalize block w-full text-left hover:text-purple-400 transition-colors"
+                    className="capitalize block w-full text-left hover:text-cyan-400 transition-colors"
                   >
                     {section}
                   </button>
@@ -191,18 +244,18 @@ export default function Portfolio() {
         <div className="text-center max-w-4xl mx-auto">
           <div className="relative">
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse"></div>
+              <div className="w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl animate-pulse"></div>
             </div>
             <div className="relative z-10">
               <h1 className="text-5xl md:text-7xl font-bold mb-6 animate-fade-in">
                 We Build Digital Solutions
               </h1>
-              <p className="text-xl md:text-2xl text-gray-300 mb-8">
+              <p className="text-xl md:text-2xl text-gray-400 mb-8">
                 Expert web development team crafting websites and applications for small businesses
               </p>
               <button
                 onClick={() => scrollToSection('contact')}
-                className="bg-gradient-to-r from-purple-500 to-pink-600 px-8 py-4 rounded-full font-bold text-lg hover:scale-105 transition-transform shadow-lg hover:shadow-purple-500/50"
+                className="bg-gradient-to-r from-cyan-600 to-blue-600 px-8 py-4 rounded-lg font-bold text-lg hover:scale-105 transition-transform shadow-lg hover:shadow-cyan-500/30"
               >
                 Start Your Project
               </button>
@@ -214,18 +267,18 @@ export default function Portfolio() {
       {/* Services Section */}
       <section id="services" className="py-20 px-4">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-12 bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-12 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
             Our Services
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {services.map((service, index) => (
               <div
                 key={index}
-                className="bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10 hover:scale-105 transition-transform hover:shadow-xl hover:shadow-purple-500/20"
+                className="bg-slate-900/50 backdrop-blur-lg rounded-xl p-6 border border-cyan-500/20 hover:scale-105 transition-transform hover:shadow-xl hover:shadow-cyan-500/10 hover:border-cyan-500/40"
               >
-                <div className="text-purple-400 mb-4">{service.icon}</div>
-                <h3 className="text-xl font-bold mb-3 text-purple-300">{service.title}</h3>
-                <p className="text-gray-300">{service.description}</p>
+                <div className="text-cyan-400 mb-4">{service.icon}</div>
+                <h3 className="text-xl font-bold mb-3 text-cyan-300">{service.title}</h3>
+                <p className="text-gray-400">{service.description}</p>
               </div>
             ))}
           </div>
@@ -233,23 +286,23 @@ export default function Portfolio() {
       </section>
 
       {/* Team Section */}
-      <section id="team" className="py-20 px-4 bg-black/20">
+      <section id="team" className="py-20 px-4 bg-black/30">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-12 bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-12 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
             Meet Our Team
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {team.map((member, index) => (
               <div
                 key={index}
-                className="bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10 text-center hover:scale-105 transition-transform"
+                className="bg-slate-900/50 backdrop-blur-lg rounded-xl p-6 border border-cyan-500/20 text-center hover:scale-105 transition-transform hover:border-cyan-500/40"
               >
-                <div className="w-32 h-32 mx-auto mb-4 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center text-4xl font-bold">
+                <div className="w-32 h-32 mx-auto mb-4 bg-gradient-to-br from-cyan-600 to-blue-700 rounded-full flex items-center justify-center text-4xl font-bold shadow-lg shadow-cyan-500/20">
                   {member.avatar}
                 </div>
                 <h3 className="text-xl font-bold mb-2">{member.name}</h3>
-                <p className="text-purple-400 text-sm mb-3">{member.role}</p>
-                <p className="text-gray-300 text-sm">{member.description}</p>
+                <p className="text-cyan-400 text-sm mb-3">{member.role}</p>
+                <p className="text-gray-400 text-sm">{member.description}</p>
               </div>
             ))}
           </div>
@@ -259,21 +312,21 @@ export default function Portfolio() {
       {/* Projects Section */}
       <section id="projects" className="py-20 px-4">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-12 bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-12 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
             Our Projects
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {projects.map((project, index) => (
               <div
                 key={index}
-                className="bg-white/5 backdrop-blur-lg rounded-2xl overflow-hidden border border-white/10 hover:scale-105 transition-transform"
+                className="bg-slate-900/50 backdrop-blur-lg rounded-xl overflow-hidden border border-cyan-500/20 hover:scale-105 transition-transform hover:border-cyan-500/40"
               >
-                <div className="h-48 bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center text-6xl">
+                <div className="h-48 bg-gradient-to-br from-cyan-600 to-blue-700 flex items-center justify-center text-6xl">
                   {project.emoji}
                 </div>
                 <div className="p-6">
-                  <h3 className="text-xl font-bold mb-2 text-purple-300">{project.title}</h3>
-                  <p className="text-gray-300">{project.description}</p>
+                  <h3 className="text-xl font-bold mb-2 text-cyan-300">{project.title}</h3>
+                  <p className="text-gray-400">{project.description}</p>
                 </div>
               </div>
             ))}
@@ -282,12 +335,12 @@ export default function Portfolio() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-20 px-4 bg-black/20">
+      <section id="contact" className="py-20 px-4 bg-black/30">
         <div className="max-w-2xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-12 bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-12 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
             Get In Touch
           </h2>
-          <form onSubmit={handleSubmit} className="bg-white/5 backdrop-blur-lg rounded-2xl p-8 border border-white/10">
+          <div className="bg-slate-900/50 backdrop-blur-lg rounded-xl p-8 border border-cyan-500/20">
             <div className="mb-6">
               <label htmlFor="name" className="block text-gray-300 mb-2">Name</label>
               <input
@@ -296,8 +349,7 @@ export default function Portfolio() {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                required
-                className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-white"
+                className="w-full px-4 py-3 bg-slate-800 border border-cyan-500/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 text-white"
               />
             </div>
             <div className="mb-6">
@@ -308,21 +360,26 @@ export default function Portfolio() {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                required
-                className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-white"
+                className="w-full px-4 py-3 bg-slate-800 border border-cyan-500/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 text-white"
               />
             </div>
             <div className="mb-6">
               <label htmlFor="project" className="block text-gray-300 mb-2">Project Type</label>
-              <input
-                type="text"
+              <select
                 id="project"
                 name="project"
                 value={formData.project}
                 onChange={handleChange}
-                placeholder="e.g., Static Website, Management System"
-                className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-white placeholder-gray-500"
-              />
+                required
+                className="w-full px-4 py-3 bg-slate-800 border border-cyan-500/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 text-white"
+              >
+                <option value="" disabled>Select a project type</option>
+                {projectTypes.map((type, index) => (
+                  <option key={index} value={type} className="bg-slate-800">
+                    {type}
+                  </option>
+                ))}
+              </select>
             </div>
             <div className="mb-6">
               <label htmlFor="message" className="block text-gray-300 mb-2">Message</label>
@@ -331,24 +388,23 @@ export default function Portfolio() {
                 name="message"
                 value={formData.message}
                 onChange={handleChange}
-                required
                 rows="5"
-                className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-white resize-none"
-              ></textarea>
+                className="w-full px-4 py-3 bg-slate-800 border border-cyan-500/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 text-white resize-none"
+              />
             </div>
             <button
-              type="submit"
-              className="w-full bg-gradient-to-r from-purple-500 to-pink-600 py-3 rounded-lg font-bold hover:scale-105 transition-transform shadow-lg"
+              onClick={handleSubmit}
+              className="w-full bg-gradient-to-r from-cyan-600 to-blue-600 py-3 rounded-lg font-bold hover:scale-105 transition-transform shadow-lg hover:shadow-cyan-500/30"
             >
               Send Message
             </button>
-          </form>
+          </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-slate-900 py-8 text-center border-t border-white/10">
-        <p className="text-gray-400">© 2024 DevSquad. Building the web, one project at a time.</p>
+      <footer className="bg-black py-8 text-center border-t border-cyan-500/20">
+        <p className="text-gray-500">© 2025 WebSight. Building the web, one project at a time.</p>
       </footer>
     </div>
   );
