@@ -5,7 +5,7 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="navbar bg-transparent fixed top-0 left-0 w-full h-[90px] z-50 px-6">
+      <div className="navbar bg-transparent top-0 left-0 w-full h-[90px] z-50 px-6 absolute">
         <div className="flex-1">
           <a className="btn btn-ghost text-xl">WebSight</a>
         </div>
